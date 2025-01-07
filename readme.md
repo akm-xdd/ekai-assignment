@@ -38,7 +38,7 @@ project/
 cd project-directory
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```.
+```
 
 3. Install the required packages using the following command (virtual environment is recommended):
 

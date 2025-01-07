@@ -36,8 +36,8 @@ def process_document_with_chunking(file_path: str) -> List[Dict]:
     
     # Initialize text splitter for chunking
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=10,
-        chunk_overlap=2,
+        chunk_size=100,
+        chunk_overlap=20,
         length_function=len,
         separators=["\n\n", "\n", " ", ""]
     )

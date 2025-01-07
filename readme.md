@@ -89,3 +89,17 @@ All the testcases prescribed in the [Assignment.pdf](Assignment.pdf) file have b
 2. Stronger search capabilities
 
 3. Better metadata handling
+
+## Architecture
+
+![Architecture](architecture.png)
+
+The architecture here is simple. It is a three-tier architecture with the following components:
+
+1. Driver
+2. DB Manager
+3. PDF Processor
+
+Each component has its own responsibility. The driver is responsible for the user interface and interaction. The DB Manager is responsible for handling the database operations. The PDF Processor is responsible for processing the PDFs and extracting the required information.
+
+Each component is separate and can be replaced with a different implementation. This makes the application modular, extensible, and maintainable.

@@ -89,28 +89,33 @@ class DBManager:
             if success:
                 print(f"Stored chunk {doc['metadata']['chunk_id']} from {doc['metadata']['source']}")
 
+
     def find_closest_date_documents(self, target_date: str) -> Optional[Dict]:
-        """Find document chunks closest to the target date"""
+   
         try:
-            
+        # Find documents with closest date and get all their details
             self.cursor.execute('''
                 WITH ClosestDate AS (
-                    SELECT DISTINCT date, source 
+                    SELECT date
                     FROM document_chunks
+                    GROUP BY date
                     ORDER BY ABS(julianday(date) - julianday(?))
                     LIMIT 1
                 )
-                SELECT *
+                SELECT * 
                 FROM document_chunks d
                 WHERE d.date = (SELECT date FROM ClosestDate)
-                AND d.source = (SELECT source FROM ClosestDate)
-                ORDER BY d.chunk_id
             ''', (target_date,))
             
             results = self.cursor.fetchall()
             if not results:
                 return None
-            
+
+            # If multiple docs exist for same date, get the latest version
+            if len(results) > 1:
+                latest_doc = max(results, key=lambda x: version.parse(x[3]))
+                results = [latest_doc]
+
             chunks = []
             for result in results:
                 chunks.append({
@@ -139,6 +144,7 @@ class DBManager:
         except Exception as e:
             print(f"Error finding documents: {e}")
             return None
+
 
     def search_with_security(self, target_date: str, security_level: str) -> Optional[Dict]:
         """Find documents with specified security level closest to target date"""
